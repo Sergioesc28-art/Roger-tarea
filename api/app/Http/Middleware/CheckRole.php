@@ -13,17 +13,18 @@ class CheckRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, ...$roles): Response
+    public function handle(Request $request, Closure $next, $role)
     {
-        // 1. Verificar si el usuario está logueado (aunque auth:sanctum ya lo hace)
-        if (! $request->user()) {
-            return response()->json(['message' => 'No autenticado'], 401);
-        }
+        // Mapeo de roles (ajusta los IDs según tu base de datos)
+        // 1: Admin, 2: Docente, 3: Alumno
+        $rolesMap = [
+            'admin' => 1,
+            'docente' => 2,
+            'alumno' => 3
+        ];
 
-        // 2. Verificar si el rol del usuario coincide con los roles permitidos en la ruta
-        // $request->user()->role->name nos da 'admin', 'alumno', etc.
-        if (! in_array($request->user()->role->name, $roles)) {
-            return response()->json(['message' => 'No autorizado. Rol insuficiente.'], 403);
+        if (!$request->user() || $request->user()->role_id !== $rolesMap[$role]) {
+            return response()->json(['message' => 'No autorizado'], 403);
         }
 
         return $next($request);
