@@ -20,4 +20,9 @@ class Subject extends Model
     {
         return $this->hasMany(Course::class);
     }
+
+    public function scopeForCareer($query, $careerId)
+    {
+        return $query->where('career_id', $careerId);
+    }
 }
