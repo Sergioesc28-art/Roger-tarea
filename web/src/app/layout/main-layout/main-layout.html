@@ -1,0 +1,98 @@
+<div class="flex h-screen overflow-hidden transition-colors duration-500 font-sans"
+     style="background-color: var(--app-bg);">
+
+  <aside class="hidden md:flex w-[280px] flex-col m-4 rounded-[30px] glass-panel z-30 transition-all duration-300">
+    
+    <div class="h-24 flex items-center px-8">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-[12px] flex items-center justify-center shadow-lg"
+             style="background: var(--primary);">
+          <i class="pi pi-verified text-white text-xl"></i>
+        </div>
+        <span class="font-bold text-2xl tracking-tight" style="color: var(--text-main)">SAEKO</span>
+      </div>
+    </div>
+
+    <nav class="flex-1 px-4 space-y-2 overflow-y-auto py-2">
+      @for (item of menuItems(); track item.label) {
+        <a [routerLink]="item.route" 
+           routerLinkActive="active-link"
+           class="flex items-center gap-4 px-5 py-4 rounded-[18px] transition-all duration-200 group relative opacity-70 hover:opacity-100 hover:bg-white/10 dark:hover:bg-white/5">
+          
+          <i [class]="item.icon" class="text-xl transition-colors" style="color: var(--text-main)"></i>
+          
+          <span class="text-[15px] font-medium tracking-wide" style="color: var(--text-main)">
+            {{ item.label }}
+          </span>
+
+          <div class="active-indicator absolute left-0 h-8 w-1 rounded-r-full bg-blue-500 hidden"></div>
+        </a>
+      }
+    </nav>
+
+    <div class="p-6 mt-auto">
+      <div class="flex items-center gap-3 p-4 rounded-[20px]" 
+           style="background-color: var(--input-bg);">
+        <p-avatar icon="pi pi-user" shape="circle" 
+                  styleClass="bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-200"></p-avatar>
+        <div class="overflow-hidden flex-1">
+          <p class="text-sm font-bold truncate" style="color: var(--text-main)">{{ user()?.email }}</p>
+          <p class="text-[11px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-muted)">
+            {{ user()?.rol }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="flex-1 flex flex-col h-full overflow-hidden relative">
+    
+    <header class="h-20 mx-4 mt-4 rounded-[24px] glass-panel flex items-center justify-between px-8 z-20 shrink-0">
+      
+      <h1 class="text-lg font-semibold opacity-80" style="color: var(--text-main)">
+        Panel de Gestión
+      </h1>
+
+      <div class="flex items-center gap-4">
+        
+        <button (click)="themeService.toggleTheme()" 
+                class="w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110 active:scale-95"
+                style="background-color: var(--input-bg);">
+            @if (themeService.isDark()) {
+                <i class="pi pi-moon text-lg text-indigo-400"></i>
+            } @else {
+                <i class="pi pi-sun text-lg text-amber-500"></i>
+            }
+        </button>
+
+        <div class="h-8 w-px mx-2 opacity-20" style="background-color: var(--text-muted);"></div>
+
+        <button 
+          (click)="logout()"
+          class="flex items-center gap-2 px-4 py-2 rounded-full font-medium text-sm transition-all hover:bg-red-500/10 text-red-500 hover:text-red-600">
+          <i class="pi pi-power-off"></i>
+          <span>Salir</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6">
+      <div class="animate-enter pb-10">
+          <router-outlet></router-outlet>
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<style>
+  .active-link {
+    opacity: 1 !important;
+    background-color: var(--card-bg) !important;
+    box-shadow: 0 4px 12px var(--shadow-color);
+  }
+  .active-link i, .active-link span {
+    color: var(--primary) !important;
+    font-weight: 600;
+  }
+</style>

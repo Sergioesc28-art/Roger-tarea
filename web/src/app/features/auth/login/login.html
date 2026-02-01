@@ -1,0 +1,71 @@
+<app-ui-loading [visible]="isLoading()"></app-ui-loading>
+
+<div class="w-full max-w-[400px] px-6 animate-enter z-10">
+
+  <div class="glass-panel rounded-[32px] p-10 text-center relative overflow-hidden">
+    
+    <div class="mb-8 relative inline-block">
+      <div class="w-20 h-20 rounded-[22px] bg-gradient-to-tr from-blue-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-blue-500/30">
+        <i class="pi pi-verified text-4xl text-white"></i>
+      </div>
+    </div>
+
+    <h2 class="text-3xl font-bold tracking-tight mb-2">Bienvenido</h2>
+    <p class="text-[var(--text-muted)] text-sm font-medium mb-8">Ingresa a tu cuenta Saeko</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5 text-left">
+      
+      @if (errorMsg()) {
+        <div class="bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold p-3 rounded-xl text-center">
+          {{ errorMsg() }}
+        </div>
+      }
+
+      <div class="group">
+        <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-2 ml-1">Correo</label>
+        <span class="p-input-icon-left w-full">
+          <i class="pi pi-envelope z-10 text-[var(--text-muted)]"></i>
+          <input 
+            pInputText 
+            formControlName="email" 
+            placeholder="usuario@escuela.mx" 
+            class="w-full" />
+        </span>
+      </div>
+
+      <div class="group">
+        <label class="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-2 ml-1">Contraseña</label>
+        <p-password 
+          formControlName="password" 
+          [feedback]="false" 
+          [toggleMask]="true" 
+          styleClass="w-full"
+          inputStyleClass="w-full pl-10" 
+          placeholder="••••••••" />
+      </div>
+
+      <div class="pt-2">
+        <button 
+          pButton 
+          label="Ingresar" 
+          type="submit" 
+          [disabled]="loginForm.invalid"
+          class="w-full text-lg shadow-lg shadow-blue-500/20">
+        </button>
+      </div>
+
+    </form>
+    
+    <div class="mt-8">
+      <a href="#" class="text-xs font-medium text-[var(--primary)] hover:underline opacity-80 hover:opacity-100 transition-opacity">
+        ¿Olvidaste tu contraseña?
+      </a>
+    </div>
+
+  </div>
+  
+  <p class="text-center text-[var(--text-muted)] text-xs mt-8 opacity-60">
+    &copy; 2026 Sistema Saeko. V 2.0
+  </p>
+
+</div>

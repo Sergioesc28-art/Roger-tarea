@@ -1,1 +1,106 @@
-/* You can add global styles to this file, and also import other style files */
+/* 1. Importaciones Base */
+@import "tailwindcss";
+@import "primeicons/primeicons.css";
+
+/* 2. Definición de Variables "Apple Style" */
+:root {
+  /* FUENTE: San Francisco (Apple) o similar */
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* COLORES MODO CLARO (Light Mode) */
+  --app-bg: #F5F5F7;              /* El gris muy claro de fondo de Mac */
+  --glass-bg: rgba(255, 255, 255, 0.65); /* Vidrio */
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --text-main: #1D1D1F;           /* Negro suave Apple */
+  --text-muted: #86868B;
+  --primary: #0071e3;             /* Azul Apple */
+  --shadow-color: rgba(0, 0, 0, 0.08);
+  
+  --card-bg: #FFFFFF;
+  --input-bg: #F5F5F7;            /* Inputs grisáceos como en iOS */
+}
+
+/* 3. COLORES MODO OSCURO (Dark Mode) - Se activan con la clase .dark */
+.dark {
+  --app-bg: #000000;              /* Negro puro o casi puro */
+  --glass-bg: rgba(28, 28, 30, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-main: #F5F5F7;
+  --text-muted: #86868B;
+  --primary: #2997ff;             /* Azul Apple Dark */
+  --shadow-color: rgba(0, 0, 0, 0.5);
+
+  --card-bg: #1C1C1E;
+  --input-bg: #2C2C2E;
+}
+
+/* 4. Estilos Globales */
+body {
+  font-family: var(--font-family);
+  background-color: var(--app-bg);
+  color: var(--text-main);
+  transition: background-color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); /* Transición suave Apple */
+  margin: 0;
+  -webkit-font-smoothing: antialiased; /* Texto nítido */
+}
+
+/* 5. Clases de Utilidad Personalizadas (Glassmorphism) */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px); /* El desenfoque potente de Apple */
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 20px 40px var(--shadow-color);
+}
+
+/* 6. OVERRIDES DE PRIMENG (Para que parezca iOS) */
+
+/* Inputs redondeados y grisáceos */
+.p-inputtext {
+  background-color: var(--input-bg) !important;
+  border: 1px solid transparent !important; /* Sin borde por defecto */
+  border-radius: 12px !important;
+  padding: 1rem 1rem !important;
+  color: var(--text-main) !important;
+  transition: all 0.3s ease !important;
+}
+
+.p-inputtext:focus {
+  background-color: var(--card-bg) !important; /* Se ilumina al foco */
+  box-shadow: 0 0 0 2px var(--primary) !important; /* Anillo de foco azul */
+}
+
+/* Botones estilo iOS */
+.p-button {
+  border-radius: 99px !important; /* Píldora completa */
+  background-color: var(--primary) !important;
+  border: none !important;
+  font-weight: 500 !important;
+  padding: 0.8rem 1.5rem !important;
+  transition: transform 0.1s active !important;
+}
+
+.p-button:active {
+  transform: scale(0.98); /* Efecto de click */
+}
+
+/* Tarjetas (Cards) */
+.p-card {
+  background: transparent !important; /* Usaremos nuestro glass-panel */
+  box-shadow: none !important;
+  border-radius: 24px !important;
+}
+
+.p-card .p-card-body {
+  padding: 0 !important;
+}
+
+/* 7. Animaciones */
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-enter {
+  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; /* Curva de animación de iOS */
+}

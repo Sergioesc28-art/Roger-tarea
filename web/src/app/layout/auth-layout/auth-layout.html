@@ -1,0 +1,17 @@
+<div class="min-h-screen relative flex flex-col justify-center items-center overflow-hidden transition-colors duration-500"
+     style="background-color: var(--app-bg);">
+  
+  <div class="absolute top-[-10%] left-[20%] w-[500px] h-[500px] rounded-full blur-[120px] opacity-40 animate-pulse"
+       style="background-color: var(--primary);"></div>
+  
+  <div class="absolute bottom-[-10%] right-[20%] w-[600px] h-[600px] bg-purple-500 rounded-full blur-[130px] opacity-20 animate-pulse" 
+       style="animation-delay: 2s;"></div>
+
+  <router-outlet></router-outlet>
+
+  <div class="mt-8 text-center text-xs relative z-10 opacity-60" 
+       style="color: var(--text-muted);">
+    <p>&copy; 2026 Sistema Escolar UTMeme. Todos los derechos reservados.</p>
+  </div>
+
+</div>
