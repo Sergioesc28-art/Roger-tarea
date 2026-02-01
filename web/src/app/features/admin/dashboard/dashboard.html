@@ -1,0 +1,68 @@
+<div class="flex flex-col gap-8 animate-enter">
+
+  <div class="flex flex-col md:flex-row justify-between items-end gap-4">
+    <div>
+      <h2 class="text-3xl font-bold tracking-tight" style="color: var(--text-main)">Resumen General</h2>
+      <p class="text-sm font-medium mt-1" style="color: var(--text-muted)">Bienvenido al ciclo escolar 2026</p>
+    </div>
+    <div class="flex gap-3">
+      <button pButton label="Reportes" icon="pi pi-download" class="p-button-outlined !bg-transparent !text-[var(--text-main)] !border-[var(--glass-border)]"></button>
+      <button pButton label="Nueva Inscripción" icon="pi pi-plus"></button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    @for (stat of stats; track stat.title) {
+      <div class="glass-panel p-6 rounded-[24px] relative overflow-hidden group transition-transform hover:-translate-y-1">
+        
+        <div class="flex justify-between items-start z-10 relative">
+          <div>
+            <span class="block text-xs font-bold uppercase tracking-wider mb-2" style="color: var(--text-muted)">{{ stat.title }}</span>
+            <span class="text-3xl font-bold tracking-tight" style="color: var(--text-main)">{{ stat.value }}</span>
+          </div>
+          
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-lg"
+               [style.background-color]="stat.color">
+            <i [class]="stat.icon"></i>
+          </div>
+        </div>
+
+        <div class="mt-4 inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white/10 text-xs font-bold backdrop-blur-sm"
+             [style.color]="stat.color">
+          <i class="pi pi-arrow-up text-[10px]"></i> {{ stat.increase }}
+        </div>
+
+      </div>
+    }
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    <div class="lg:col-span-2 glass-panel p-8 rounded-[32px]">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-bold" style="color: var(--text-main)">Actividad de Inscripciones</h3>
+      </div>
+      <p-chart type="line" [data]="chartData" [options]="chartOptions" height="300px"></p-chart>
+    </div>
+
+    <div class="glass-panel p-6 rounded-[32px] flex flex-col">
+      <h3 class="text-lg font-bold mb-4" style="color: var(--text-main)">Recientes</h3>
+      
+      <div class="flex-1 overflow-auto space-y-3">
+        @for (student of recentStudents; track student.name) {
+          <div class="flex items-center gap-3 p-3 rounded-[16px] transition-colors hover:bg-white/5 cursor-pointer">
+            <p-avatar icon="pi pi-user" shape="circle" styleClass="bg-gray-200 dark:bg-gray-700 text-gray-500"></p-avatar>
+            <div class="flex-1">
+              <p class="text-sm font-bold" style="color: var(--text-main)">{{ student.name }}</p>
+              <p class="text-xs" style="color: var(--text-muted)">{{ student.career }}</p>
+            </div>
+            <i class="pi pi-chevron-right text-xs opacity-50" style="color: var(--text-muted)"></i>
+          </div>
+        }
+      </div>
+
+      <button pButton label="Ver Todos" [text]="true" class="w-full mt-2"></button>
+    </div>
+
+  </div>
+</div>

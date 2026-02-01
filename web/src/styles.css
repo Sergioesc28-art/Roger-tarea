@@ -104,3 +104,88 @@ body {
 .animate-enter {
   animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; /* Curva de animación de iOS */
 }
+
+/* =========================================
+   8. TABLAS ESTILO APPLE (iOS Settings)
+   ========================================= */
+
+.p-datatable {
+  background: transparent !important;
+}
+
+/* Header de la Tabla (Títulos de columna) */
+.p-datatable .p-datatable-thead > tr > th {
+  background: transparent !important;
+  color: var(--text-muted) !important;
+  border-bottom: 1px solid var(--glass-border) !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  
+  font-size: 0.75rem !important; /* Texto pequeño */
+  text-transform: uppercase !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
+  padding: 1rem 1.5rem !important;
+}
+
+/* Cuerpo de la Tabla (Filas) */
+.p-datatable .p-datatable-tbody > tr {
+  background: transparent !important;
+  color: var(--text-main) !important;
+  transition: background-color 0.2s ease !important;
+}
+
+/* Hover en filas (Sutil iluminación) */
+.p-datatable .p-datatable-tbody > tr:hover {
+  background-color: var(--shadow-color) !important; 
+}
+
+/* Celdas */
+.p-datatable .p-datatable-tbody > tr > td {
+  border-bottom: 1px solid var(--glass-border) !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  padding: 1.2rem 1.5rem !important; /* Espaciado generoso */
+  font-size: 0.95rem !important;
+}
+
+/* Quitar el borde de la última fila para limpieza total */
+.p-datatable .p-datatable-tbody > tr:last-child > td {
+  border-bottom: none !important;
+}
+
+/* Paginador (Estilo Minimalista) */
+.p-paginator {
+  background: transparent !important;
+  border: none !important;
+  padding-top: 1rem !important;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page,
+.p-paginator .p-paginator-first,
+.p-paginator .p-paginator-prev,
+.p-paginator .p-paginator-next,
+.p-paginator .p-paginator-last {
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-muted) !important;
+  border-radius: 50% !important; /* Círculos perfectos */
+  min-width: 2.5rem !important;
+  height: 2.5rem !important;
+  font-weight: 600 !important;
+  transition: all 0.2s !important;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: var(--primary) !important;
+  color: white !important;
+  box-shadow: 0 4px 10px var(--shadow-color) !important;
+}
+
+.p-paginatorElement:hover {
+  background: var(--input-bg) !important;
+  color: var(--text-main) !important;
+}
+>>>>>>> Stashed changes

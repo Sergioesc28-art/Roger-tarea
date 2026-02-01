@@ -13,6 +13,7 @@ import { authInterceptor } from './core/auth.interceptor'; // Lo crearemos abajo
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
     
     // Router con transiciones de vista nativas del navegador
     provideRouter(routes, withViewTransitions()),
@@ -31,7 +32,7 @@ export const appConfig: ApplicationConfig = {
         theme: {
             preset: Aura,
             options: {
-                darkModeSelector: '.dark-mode', // Control manual del modo oscuro
+                darkModeSelector: '.dark',
             }
         },
         ripple: true
