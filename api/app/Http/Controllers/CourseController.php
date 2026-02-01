@@ -57,4 +57,25 @@ class CourseController extends Controller
         $course->delete(); // Soft Delete
         return response()->json(['message' => 'Clase eliminada']);
     }
+
+    public function update(Request $request, $id)
+    {
+        $course = Course::findOrFail($id);
+
+        $request->validate([
+            'teacher_id' => 'required|exists:teachers,id',
+            'classroom_id' => 'required|exists:classrooms,id',
+            'max_quota' => 'required|integer|min:1',
+            'schedule_info' => 'required|string'
+        ]);
+
+        // Validar que el nuevo cupo no sea menor a los alumnos ya inscritos
+        if ($request->max_quota < $course->current_quota) {
+            return response()->json(['message' => 'El cupo máximo no puede ser menor a los alumnos ya inscritos.'], 400);
+        }
+
+        $course->update($request->all());
+
+        return response()->json(['message' => 'Clase actualizada correctamente']);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Period;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\CourseResource;
@@ -70,5 +71,59 @@ class StudentController extends Controller
     public function myPayments(Request $request) {
         $payments = $request->user()->student->payments;
         return response()->json($payments);
+    }
+    
+    public function myCurrentSchedule(Request $request)
+    {
+        $student = $request->user()->student;
+        
+        // Obtener periodo activo
+        $activePeriod = Period::where('status', 'Activo')->first();
+        if (!$activePeriod) {
+            return response()->json(['message' => 'No hay periodo activo'], 404);
+        }
+
+        // Obtener materias inscritas SOLO del periodo actual
+        // No necesitamos paginación aquí porque un alumno rara vez tiene más de 7-8 materias activas
+        $schedule = Enrollment::with(['course.subject', 'course.teacher', 'course.classroom'])
+            ->where('student_id', $student->id)
+            ->whereHas('course', function($q) use ($activePeriod) {
+                $q->where('period_id', $activePeriod->id);
+            })
+            ->get();
+
+        // Formateo para renderizar el calendario en el Frontend
+        $formatted = $schedule->map(function($item) {
+            return [
+                'course_id' => $item->course_id,
+                'subject' => $item->course->subject->name,
+                'teacher' => $item->course->teacher ? ($item->course->teacher->first_name . ' ' . $item->course->teacher->last_name) : 'TBD',
+                'classroom' => $item->course->classroom->name ?? 'Virtual',
+                // Asumiendo que guardas el horario en texto o JSON (ej: "Lun 8-10, Mie 8-10")
+                'schedule_text' => $item->course->schedule_info, 
+                // Si tienes los días desglosados en DB, retornar eso mejor
+            ];
+        });
+
+        return response()->json($formatted);
+    }
+
+    // === ACTUALIZAR DATOS DE CONTACTO ===
+    public function updateProfile(Request $request)
+    {
+        $student = $request->user()->student;
+        
+        // Generalmente al alumno solo se le deja cambiar teléfono o foto, no nombre ni matrícula
+        $request->validate([
+            'phone' => 'nullable|string|max:15',
+            'address' => 'nullable|string|max:255'
+        ]);
+
+        $student->update([
+            'phone' => $request->phone,
+            'address' => $request->address // Asegúrate de tener este campo en la migración
+        ]);
+
+        return response()->json(['message' => 'Perfil actualizado']);
     }
 }
