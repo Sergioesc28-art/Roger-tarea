@@ -1,0 +1,51 @@
+<div class="schedule-container">
+  <div class="page-header">
+    <h1>Mi Horario</h1>
+    <p>Clases asignadas por día</p>
+  </div>
+
+  @if (loading()) {
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Cargando horario...</p>
+    </div>
+  } @else if (schedule().length === 0) {
+    <div class="empty-state">
+      <p>No tienes clases asignadas en este momento</p>
+    </div>
+  } @else {
+    <div class="schedule-grid">
+      @for (day of daysOfWeek; track day) {
+        @if (getCoursesByDay(day).length > 0) {
+          <div class="day-card">
+            <div class="day-header">
+              <h3>{{ day }}</h3>
+              <span class="class-count">
+                {{ getCoursesByDay(day).length }} 
+                {{ getCoursesByDay(day).length === 1 ? 'clase' : 'clases' }}
+              </span>
+            </div>
+
+            <div class="classes-list">
+              @for (course of getCoursesByDay(day); track course.id_clase) {
+                <div class="class-item">
+                  <div class="class-time">
+                    {{ course.horario.inicio }} - {{ course.horario.fin }}
+                  </div>
+                  <div class="class-details">
+                    <div class="class-name">{{ course.nombre_materia }}</div>
+                    <div class="class-info">
+                      <span>{{ course.salon }}</span>
+                      <span class="separator">•</span>
+                      <span>{{ course.cupo.actual }}/{{ course.cupo.maximo }} estudiantes</span>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,61 @@
+<div class="layout">
+  <nav class="navbar">
+    <div class="navbar-container">
+      <div class="navbar-brand">
+        <h2>Sistema Escolar</h2>
+      </div>
+
+      <div class="navbar-menu">
+        @if (authService.isAdmin()) {
+          <a routerLink="/admin" routerLinkActive="active" class="nav-link">
+            Dashboard
+          </a>
+          <a routerLink="/admin/students" routerLinkActive="active" class="nav-link">
+            Alumnos
+          </a>
+          <a routerLink="/admin/courses" routerLinkActive="active" class="nav-link">
+            Clases
+          </a>
+        }
+
+        @if (authService.isTeacher()) {
+          <a routerLink="/teacher" routerLinkActive="active" class="nav-link">
+            Mi Horario
+          </a>
+          <a routerLink="/teacher/grades" routerLinkActive="active" class="nav-link">
+            Calificaciones
+          </a>
+        }
+
+        @if (authService.isStudent()) {
+          <a routerLink="/student" routerLinkActive="active" class="nav-link">
+            Inicio
+          </a>
+          <a routerLink="/student/courses" routerLinkActive="active" class="nav-link">
+            Inscripciones
+          </a>
+          <a routerLink="/student/kardex" routerLinkActive="active" class="nav-link">
+            Kardex
+          </a>
+          <a routerLink="/student/payments" routerLinkActive="active" class="nav-link">
+            Pagos
+          </a>
+        }
+      </div>
+
+      <div class="navbar-user">
+        <div class="user-info">
+          <span class="user-name">{{ userName() }}</span>
+          <span class="user-role">{{ roleName() }}</span>
+        </div>
+        <button (click)="logout()" class="btn-logout">
+          Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

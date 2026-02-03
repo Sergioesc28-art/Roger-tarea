@@ -1,0 +1,91 @@
+<div class="kardex-container">
+  <div class="page-header">
+    <h1>Mi Kardex</h1>
+    <p>Historial académico y calificaciones</p>
+  </div>
+
+  @if (!loading() && kardex().length > 0) {
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Promedio General</div>
+        <div class="stat-value">
+          {{ averageGrade() || 'N/A' }}
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Créditos Cursados</div>
+        <div class="stat-value">
+          {{ totalCredits() }}
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Materias Completadas</div>
+        <div class="stat-value">
+          {{ completedSubjects() }}
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (loading()) {
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Cargando kardex...</p>
+    </div>
+  } @else if (kardex().length === 0) {
+    <div class="empty-state">
+      <p>Aún no tienes materias en tu kardex</p>
+    </div>
+  } @else {
+    <div class="table-container">
+      <table class="kardex-table">
+        <thead>
+          <tr>
+            <th>Materia</th>
+            <th>Periodo</th>
+            <th>Créditos</th>
+            <th>Parcial 1</th>
+            <th>Parcial 2</th>
+            <th>Final</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of kardex(); track item.id) {
+            <tr>
+              <td class="subject-name">{{ item.materia.nombre }}</td>
+              <td>{{ item.periodo }}</td>
+              <td class="text-center">{{ item.materia.creditos }}</td>
+              <td class="text-center">
+                <span [class]="getGradeClass(item.calificaciones.p1)">
+                  {{ item.calificaciones.p1 ?? '-' }}
+                </span>
+              </td>
+              <td class="text-center">
+                <span [class]="getGradeClass(item.calificaciones.p2)">
+                  {{ item.calificaciones.p2 ?? '-' }}
+                </span>
+              </td>
+              <td class="text-center">
+                <span [class]="getGradeClass(item.calificaciones.final)" class="final-grade">
+                  {{ item.calificaciones.final ?? '-' }}
+                </span>
+              </td>
+              <td>
+                @if (item.calificaciones.final === null) {
+                  <span class="badge badge-pending">En Curso</span>
+                } @else if (item.calificaciones.final >= 7) {
+                  <span class="badge badge-passed">Aprobado</span>
+                } @else {
+                  <span class="badge badge-failed">Reprobado</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

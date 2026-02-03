@@ -1,0 +1,80 @@
+<div class="courses-container">
+  <div class="page-header">
+    <h1>Inscripción a Clases</h1>
+    <p>Selecciona las clases en las que deseas inscribirte</p>
+  </div>
+
+  @if (message()) {
+    <div class="alert" [class.alert-success]="message()!.type === 'success'" 
+         [class.alert-error]="message()!.type === 'error'">
+      {{ message()!.text }}
+    </div>
+  }
+
+  @if (loading()) {
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Cargando cursos disponibles...</p>
+    </div>
+  } @else if (courses().length === 0) {
+    <div class="empty-state">
+      <p>No hay cursos disponibles en este momento</p>
+    </div>
+  } @else {
+    <div class="courses-grid">
+      @for (course of courses(); track course.id_clase) {
+        <div class="course-card">
+          <div class="course-header">
+            <h3>{{ course.nombre_materia }}</h3>
+            <span class="course-group">Grupo {{ course.grupo }}</span>
+          </div>
+
+          <div class="course-info">
+            <div class="info-row">
+              <span class="label">Profesor:</span>
+              <span class="value">{{ course.profesor }}</span>
+            </div>
+
+            <div class="info-row">
+              <span class="label">Horario:</span>
+              <span class="value">
+                {{ course.horario.dia }} {{ course.horario.inicio }} - {{ course.horario.fin }}
+              </span>
+            </div>
+
+            <div class="info-row">
+              <span class="label">Salón:</span>
+              <span class="value">{{ course.salon }}</span>
+            </div>
+
+            <div class="info-row">
+              <span class="label">Cupo disponible:</span>
+              <span class="value" [class.low-quota]="course.cupo.disponible < 5">
+                {{ course.cupo.disponible }} / {{ course.cupo.maximo }}
+              </span>
+            </div>
+          </div>
+
+          <div class="course-actions">
+            @if (course.cupo.disponible > 0) {
+              <button 
+                (click)="enrollCourse(course.id_clase)"
+                [disabled]="enrolling() === course.id_clase"
+                class="btn-enroll">
+                @if (enrolling() === course.id_clase) {
+                  <span>Inscribiendo...</span>
+                } @else {
+                  <span>Inscribirse</span>
+                }
+              </button>
+            } @else {
+              <button class="btn-full" disabled>
+                Cupo lleno
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

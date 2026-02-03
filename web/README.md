@@ -1,59 +1,224 @@
-# Web
+# Sistema de Control Escolar - Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.6.
+Aplicación web desarrollada en Angular 20 para gestionar un sistema de control escolar. Incluye módulos para administradores, docentes y estudiantes.
 
-## Development server
+## 🚀 Características
 
-To start a local development server, run:
+### Módulo de Estudiante (Alumno)
+- ✅ Visualizar cursos disponibles
+- ✅ Inscripción a clases
+- ✅ Ver kardex con calificaciones
+- ✅ Consultar historial de pagos
+- ✅ Gestión de cuenta
 
+### Módulo de Docente
+- ✅ Ver horario de clases
+- ✅ Gestionar calificaciones
+- ✅ Ver lista de estudiantes por clase
+
+### Módulo de Administrador
+- ✅ Registrar nuevos estudiantes
+- ✅ Crear clases/cursos
+- ✅ Asignar profesores y salones
+- ✅ Gestionar periodos académicos
+
+## 📋 Requisitos Previos
+
+- Node.js 18+ 
+- npm 9+
+- Angular CLI 20+
+
+## 🛠️ Instalación
+
+1. Clonar el repositorio o descargar los archivos
+
+2. Instalar dependencias:
 ```bash
+npm install
+```
+
+3. Configurar la URL de la API:
+
+Edita el archivo `src/environments/environment.ts`:
+
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8000/api' // Cambia por la URL de tu API
+};
+```
+
+## 🚀 Ejecución
+
+### Modo desarrollo:
+```bash
+npm start
+# o
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+La aplicación estará disponible en `http://localhost:4200/`
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+### Modo producción:
 ```bash
-ng generate component component-name
+npm run build
+# o
+ng build --configuration production
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Los archivos compilados estarán en la carpeta `dist/`
 
-```bash
-ng generate --help
+## 🔐 Credenciales de Prueba
+
+Según la documentación de la API:
+
+**Administrador:**
+- Email: admin@sistema.com
+- Password: password123
+
+## 📱 Estructura de la Aplicación
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── login/                    # Login
+│   │   ├── layout/                   # Layout principal con navegación
+│   │   ├── student/                  # Componentes de estudiante
+│   │   │   ├── student-courses/      # Inscripción a cursos
+│   │   │   ├── student-kardex/       # Kardex
+│   │   │   └── student-payments/     # Pagos
+│   │   ├── teacher/                  # Componentes de docente
+│   │   │   └── teacher-schedule/     # Horario
+│   │   └── admin/                    # Componentes de admin
+│   ├── services/
+│   │   ├── auth.service.ts           # Autenticación
+│   │   ├── student.service.ts        # API estudiante
+│   │   ├── teacher.service.ts        # API docente
+│   │   └── admin.service.ts          # API admin
+│   ├── guards/
+│   │   └── auth.guard.ts             # Protección de rutas
+│   ├── interceptors/
+│   │   └── auth.interceptor.ts       # Interceptor HTTP
+│   ├── models/
+│   │   └── api.models.ts             # Interfaces TypeScript
+│   ├── app.routes.ts                 # Configuración de rutas
+│   └── app.config.ts                 # Configuración de la app
+├── environments/                      # Configuración de entornos
+└── styles.css                        # Estilos globales
 ```
 
-## Building
+## 🔄 Rutas de la Aplicación
 
-To build the project run:
+### Públicas
+- `/login` - Inicio de sesión
+
+### Estudiante (requiere rol: alumno)
+- `/student/courses` - Cursos disponibles e inscripción
+- `/student/kardex` - Historial académico
+- `/student/payments` - Estado de pagos
+
+### Docente (requiere rol: docente)
+- `/teacher` - Horario de clases
+- `/teacher/grades` - Gestión de calificaciones
+
+### Administrador (requiere rol: admin)
+- `/admin/students` - Registro de estudiantes
+- `/admin/courses` - Creación de clases
+
+## 🌐 API Endpoints Utilizados
+
+La aplicación consume los siguientes endpoints de la API:
+
+### Autenticación
+- `POST /api/login` - Iniciar sesión
+
+### Estudiante
+- `GET /api/courses` - Listar cursos disponibles
+- `POST /api/student/enroll` - Inscribirse a un curso
+- `GET /api/student/kardex` - Obtener kardex
+- `GET /api/student/payments` - Listar pagos
+
+### Docente
+- `GET /api/teacher/schedule` - Obtener horario
+- `POST /api/teacher/grades` - Registrar calificación
+
+### Administrador
+- `POST /api/admin/register/student` - Registrar estudiante
+- `POST /api/admin/courses` - Crear clase
+
+## 🎨 Tecnologías Utilizadas
+
+- **Angular 20** - Framework principal
+- **TypeScript** - Lenguaje de programación
+- **RxJS** - Programación reactiva
+- **Signals** - Gestión de estado reactivo
+- **Standalone Components** - Arquitectura modular
+- **CSS3** - Estilos y diseño responsivo
+
+## 🔒 Seguridad
+
+- Autenticación mediante tokens JWT
+- Guards para protección de rutas
+- Interceptor HTTP para agregar tokens
+- Validación de roles en el frontend
+
+## 📦 Scripts Disponibles
 
 ```bash
-ng build
+npm start          # Iniciar servidor de desarrollo
+npm run build      # Compilar para producción
+npm test           # Ejecutar tests
+npm run lint       # Verificar código
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🐛 Solución de Problemas
 
-## Running unit tests
+### Error de CORS
+Si encuentras errores de CORS, asegúrate de que tu API Laravel tenga configurado correctamente:
+- `php artisan config:clear`
+- Verificar `config/cors.php`
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### Token no válido
+Si recibes errores de autenticación:
+- Verifica que el token se esté enviando correctamente
+- Revisa la configuración del interceptor
+- Asegúrate de que el token no haya expirado
 
-```bash
-ng test
-```
+### Rutas no funcionan
+- Verifica que hayas importado correctamente los componentes
+- Asegúrate de que los guards estén configurados
+- Revisa la consola del navegador para errores
 
-## Running end-to-end tests
+## 📝 Notas de Desarrollo
 
-For end-to-end (e2e) testing, run:
+- La aplicación usa **Signals** para gestión de estado reactivo
+- Todos los componentes son **Standalone** (sin módulos)
+- Los estilos están encapsulados por componente
+- Se usa **TypeScript strict mode** para mayor seguridad de tipos
 
-```bash
-ng e2e
-```
+## 🤝 Contribución
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+1. Haz fork del proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
 
-## Additional Resources
+## 📄 Licencia
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Este proyecto es de código abierto y está disponible bajo la licencia MIT.
+
+## 👥 Autores
+
+Sistema desarrollado como parte de un proyecto de control escolar.
+
+## 🔗 Enlaces Útiles
+
+- [Documentación de Angular](https://angular.dev)
+- [Documentación de TypeScript](https://www.typescriptlang.org)
+- [Guía de Signals en Angular](https://angular.dev/guide/signals)
+
+---
+
+¿Necesitas ayuda? Abre un issue en el repositorio.

@@ -1,0 +1,71 @@
+<div class="payments-container">
+  <div class="page-header">
+    <h1>Mis Pagos</h1>
+    <p>Historial y estado de pagos</p>
+  </div>
+
+  @if (loading()) {
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Cargando pagos...</p>
+    </div>
+  } @else if (payments().length === 0) {
+    <div class="empty-state">
+      <p>No tienes pagos registrados</p>
+    </div>
+  } @else {
+    <div class="payments-grid">
+      @for (payment of payments(); track payment.id) {
+        <div class="payment-card" 
+             [class.payment-paid]="payment.status === 'Pagado'"
+             [class.payment-pending]="payment.status === 'Pendiente'"
+             [class.payment-overdue]="isPastDue(payment)">
+          
+          <div class="payment-header">
+            <div class="payment-concept">
+              {{ payment.concept }}
+            </div>
+            <div class="payment-amount">
+              {{ formatCurrency(payment.amount) }}
+            </div>
+          </div>
+
+          <div class="payment-details">
+            <div class="detail-row">
+              <span class="detail-label">Fecha de vencimiento:</span>
+              <span class="detail-value">{{ formatDate(payment.due_date) }}</span>
+            </div>
+
+            @if (payment.paid_at) {
+              <div class="detail-row">
+                <span class="detail-label">Fecha de pago:</span>
+                <span class="detail-value">{{ formatDate(payment.paid_at) }}</span>
+              </div>
+            }
+
+            <div class="detail-row">
+              <span class="detail-label">Estado:</span>
+              <span class="payment-status">
+                @if (payment.status === 'Pagado') {
+                  <span class="badge badge-paid">✓ Pagado</span>
+                } @else if (isPastDue(payment)) {
+                  <span class="badge badge-overdue">⚠ Vencido</span>
+                } @else {
+                  <span class="badge badge-pending">○ Pendiente</span>
+                }
+              </span>
+            </div>
+          </div>
+
+          @if (payment.status === 'Pendiente') {
+            <div class="payment-actions">
+              <button class="btn-pay">
+                Realizar Pago
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>
